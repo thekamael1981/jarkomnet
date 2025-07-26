@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelajaran Interaktif Informatika: Jaringan Komputer & Internet</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1><i class="fas fa-network-wired"></i> Pembelajaran Interaktif Informatika</h1>
+                <p class="subtitle">Jaringan Komputer & Internet</p>
+            </div>
+            <div class="header-right">
+                <div class="instructor-info">
+                    <h3>Subiono Ahmad</h3>
+                    <p>Pengampu Mapel Informatika</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Navigation -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <button class="nav-btn active" data-grade="X">
+                <i class="fas fa-graduation-cap"></i>
+                Kelas X
+            </button>
+            <button class="nav-btn" data-grade="XI">
+                <i class="fas fa-user-graduate"></i>
+                Kelas XI
+            </button>
+            <button class="nav-btn" data-grade="XII">
+                <i class="fas fa-certificate"></i>
+                Kelas XII
+            </button>
+        </div>
+    </nav>
+
+    <!-- Content Container -->
+    <main class="main-content">
+        <!-- Grade Selection View -->
+        <section id="gradeSelection" class="grade-selection">
+            <div class="grade-info">
+                <h2 id="gradeTitle">Kelas X - Jaringan Komputer & Internet</h2>
+                <p id="gradeDescription">Pelajari konsep dasar jaringan komputer dan internet</p>
+            </div>
+            
+            <div class="difficulty-grid">
+                <div class="difficulty-card" data-difficulty="basic">
+                    <div class="card-icon">
+                        <i class="fas fa-seedling"></i>
+                    </div>
+                    <h3>Materi Dasar</h3>
+                    <p>Konsep fundamental jaringan komputer</p>
+                    <button class="btn-primary">Mulai Belajar</button>
+                </div>
+                
+                <div class="difficulty-card" data-difficulty="intermediate">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Materi Menengah</h3>
+                    <p>Protokol dan arsitektur jaringan</p>
+                    <button class="btn-primary">Mulai Belajar</button>
+                </div>
+                
+                <div class="difficulty-card" data-difficulty="advanced">
+                    <div class="card-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Materi Lanjut</h3>
+                    <p>Keamanan dan optimasi jaringan</p>
+                    <button class="btn-primary">Mulai Belajar</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Learning Content View -->
+        <section id="learningContent" class="learning-content hidden">
+            <div class="content-header">
+                <button class="back-btn" id="backToGrade">
+                    <i class="fas fa-arrow-left"></i> Kembali
+                </button>
+                <h2 id="contentTitle"></h2>
+            </div>
+
+            <div class="content-tabs">
+                <button class="tab-btn active" data-tab="material">
+                    <i class="fas fa-book"></i> Materi
+                </button>
+                <button class="tab-btn" data-tab="quiz">
+                    <i class="fas fa-question-circle"></i> Latihan Soal
+                </button>
+            </div>
+
+            <!-- Material Tab -->
+            <div id="materialTab" class="tab-content active">
+                <div class="material-section">
+                    <div class="section-card apperception">
+                        <h3><i class="fas fa-lightbulb"></i> Apersepsi</h3>
+                        <div id="apperceptionContent"></div>
+                    </div>
+
+                    <div class="section-card probing">
+                        <h3><i class="fas fa-question"></i> Pertanyaan Pemantik</h3>
+                        <div id="probingContent"></div>
+                    </div>
+
+                    <div class="section-card main-material">
+                        <h3><i class="fas fa-book-open"></i> Materi Pembelajaran</h3>
+                        <div id="mainContent"></div>
+                        
+                        <!-- Network Animation Container -->
+                        <div class="animation-container">
+                            <div id="networkAnimation"></div>
+                        </div>
+                    </div>
+
+                    <div class="section-card reflection">
+                        <h3><i class="fas fa-think"></i> Refleksi</h3>
+                        <div id="reflectionContent"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Tab -->
+            <div id="quizTab" class="tab-content">
+                <div class="quiz-container">
+                    <div class="quiz-header">
+                        <h3><i class="fas fa-clipboard-list"></i> Latihan Soal</h3>
+                        <div class="quiz-progress">
+                            <span id="questionNumber">1</span> / <span id="totalQuestions">5</span>
+                        </div>
+                    </div>
+
+                    <div class="quiz-content">
+                        <div class="question-card">
+                            <h4 id="questionText"></h4>
+                            <div id="answerOptions" class="answer-options"></div>
+                        </div>
+
+                        <div class="quiz-navigation">
+                            <button id="prevQuestion" class="btn-secondary" disabled>
+                                <i class="fas fa-chevron-left"></i> Sebelumnya
+                            </button>
+                            <button id="nextQuestion" class="btn-primary">
+                                Selanjutnya <i class="fas fa-chevron-right"></i>
+                            </button>
+                            <button id="submitQuiz" class="btn-success hidden">
+                                <i class="fas fa-check"></i> Selesai
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="quizResult" class="quiz-result hidden">
+                        <div class="result-card">
+                            <h3>Hasil Latihan</h3>
+                            <div class="score-display">
+                                <div class="score-circle">
+                                    <span id="scorePercentage">0</span>%
+                                </div>
+                                <p id="scoreText"></p>
+                            </div>
+                            <div class="result-details">
+                                <p>Benar: <span id="correctCount">0</span></p>
+                                <p>Salah: <span id="wrongCount">0</span></p>
+                                <p>Total: <span id="totalCount">0</span></p>
+                            </div>
+                            <button id="retryQuiz" class="btn-primary">
+                                <i class="fas fa-redo"></i> Coba Lagi
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Memuat konten...</p>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
