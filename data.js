@@ -272,7 +272,8 @@ const educationData = {
                             "Program komputer untuk mengelola data",
                             "Sistem operasi khusus untuk server"
                         ],
-                        correct: 0
+                        correct: 0,
+                        explanation: "Jaringan komputer memungkinkan komputer dan perangkat lain untuk saling berkomunikasi, berbagi file, printer, dan akses internet."
                     },
                     {
                         question: "Manakah yang BUKAN termasuk komponen dasar jaringan?",
@@ -292,7 +293,8 @@ const educationData = {
                             "WiFi (IEEE 802.11)",
                             "Kabel Twisted Pair"
                         ],
-                        correct: 2
+                        correct: 2,
+                        explanation: "WiFi (IEEE 802.11) adalah standar nirkabel yang paling umum untuk jaringan rumahan karena mudah digunakan dan tidak memerlukan kabel."
                     },
                     {
                         question: "Apa keuntungan utama dari jaringan komputer?",
@@ -324,7 +326,8 @@ const educationData = {
                             "Jaringan akan beralih ke topologi ring",
                             "Tidak ada pengaruh pada jaringan"
                         ],
-                        correct: 1
+                        correct: 1,
+                        explanation: "Dalam topologi star, semua perangkat terhubung ke hub/switch pusat, sehingga jika perangkat pusat rusak, seluruh komunikasi jaringan akan terputus."
                     },
                     {
                         question: "Topologi mana yang paling fault-tolerant (tahan terhadap kerusakan)?",

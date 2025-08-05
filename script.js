@@ -206,7 +206,15 @@ function displayQuestion() {
     questionNumber.textContent = currentQuestionIndex + 1;
     questionText.textContent = question.question;
     
+    // Clear any existing explanation
+    const existingExplanation = document.querySelector('.question-explanation');
+    if (existingExplanation) {
+        existingExplanation.remove();
+    }
+    
     answerOptions.innerHTML = '';
+    const hasAnswered = userAnswers[currentQuestionIndex] !== null;
+    
     question.shuffledOptions.forEach((option, index) => {
         const optionDiv = document.createElement('div');
         optionDiv.className = 'answer-option';
@@ -214,31 +222,138 @@ function displayQuestion() {
         optionDiv.innerHTML = `
             <div class="option-letter">${String.fromCharCode(65 + index)}</div>
             <span>${option.text}</span>
+            <div class="feedback-icon hidden">
+                <i class="fas fa-check-circle correct-icon"></i>
+                <i class="fas fa-times-circle incorrect-icon"></i>
+            </div>
         `;
         
+        // Restore previous selection and feedback if exists
         if (userAnswers[currentQuestionIndex] === index) {
             optionDiv.classList.add('selected');
+            if (hasAnswered) {
+                showAnswerFeedback(optionDiv, option.isCorrect);
+            }
+        }
+        
+        // Show correct answer if question was answered incorrectly
+        if (hasAnswered && option.isCorrect && userAnswers[currentQuestionIndex] !== index) {
+            const selectedOption = question.shuffledOptions[userAnswers[currentQuestionIndex]];
+            if (!selectedOption.isCorrect) {
+                optionDiv.classList.add('correct');
+                showAnswerFeedback(optionDiv, true);
+            }
         }
         
         answerOptions.appendChild(optionDiv);
     });
     
+    // Show explanation if question was already answered
+    if (hasAnswered) {
+        const selectedOption = question.shuffledOptions[userAnswers[currentQuestionIndex]];
+        showQuestionExplanation(question, selectedOption.isCorrect);
+    }
+    
     updateQuizNavigation();
 }
 
 function selectAnswer(optionElement) {
-    // Remove previous selection
+    const selectedIndex = parseInt(optionElement.dataset.index);
+    const question = currentQuiz[currentQuestionIndex];
+    const selectedOption = question.shuffledOptions[selectedIndex];
+    
+    // Remove previous selection and feedback
     answerOptions.querySelectorAll('.answer-option').forEach(opt => {
-        opt.classList.remove('selected');
+        opt.classList.remove('selected', 'correct', 'incorrect');
+        const feedbackIcon = opt.querySelector('.feedback-icon');
+        if (feedbackIcon) {
+            feedbackIcon.classList.add('hidden');
+        }
     });
     
     // Add selection to clicked option
     optionElement.classList.add('selected');
     
+    // Show immediate feedback
+    showAnswerFeedback(optionElement, selectedOption.isCorrect);
+    
     // Store answer
-    userAnswers[currentQuestionIndex] = parseInt(optionElement.dataset.index);
+    userAnswers[currentQuestionIndex] = selectedIndex;
+    
+    // Show correct answer if user selected wrong
+    if (!selectedOption.isCorrect) {
+        const correctIndex = question.shuffledOptions.findIndex(opt => opt.isCorrect);
+        if (correctIndex !== -1) {
+            const correctOption = answerOptions.children[correctIndex];
+            correctOption.classList.add('correct');
+            showAnswerFeedback(correctOption, true);
+        }
+    }
+    
+    // Show explanation if available
+    showQuestionExplanation(question, selectedOption.isCorrect);
     
     updateQuizNavigation();
+}
+
+function showAnswerFeedback(optionElement, isCorrect) {
+    const feedbackIcon = optionElement.querySelector('.feedback-icon');
+    const correctIcon = optionElement.querySelector('.correct-icon');
+    const incorrectIcon = optionElement.querySelector('.incorrect-icon');
+    
+    if (feedbackIcon) {
+        feedbackIcon.classList.remove('hidden');
+        
+        if (isCorrect) {
+            optionElement.classList.add('correct');
+            correctIcon.style.display = 'block';
+            incorrectIcon.style.display = 'none';
+        } else {
+            optionElement.classList.add('incorrect');
+            correctIcon.style.display = 'none';
+            incorrectIcon.style.display = 'block';
+        }
+    }
+}
+
+function showQuestionExplanation(question, isCorrect) {
+    // Remove existing explanation
+    const existingExplanation = document.querySelector('.question-explanation');
+    if (existingExplanation) {
+        existingExplanation.remove();
+    }
+    
+    // Show brief feedback message
+    const explanationDiv = document.createElement('div');
+    explanationDiv.className = 'question-explanation';
+    
+    if (isCorrect) {
+        explanationDiv.innerHTML = `
+            <div class="explanation-content correct-explanation">
+                <i class="fas fa-check-circle"></i>
+                <strong>Benar!</strong> ${question.explanation || 'Jawaban Anda tepat.'}
+            </div>
+        `;
+    } else {
+        const correctOption = question.shuffledOptions.find(opt => opt.isCorrect);
+        explanationDiv.innerHTML = `
+            <div class="explanation-content incorrect-explanation">
+                <i class="fas fa-info-circle"></i>
+                <strong>Jawaban yang benar:</strong> ${correctOption.text}
+                ${question.explanation ? `<br><small>${question.explanation}</small>` : ''}
+            </div>
+        `;
+    }
+    
+    // Insert after answer options
+    answerOptions.parentNode.insertBefore(explanationDiv, answerOptions.nextSibling);
+    
+    // Auto-fade after 4 seconds
+    setTimeout(() => {
+        if (explanationDiv.parentNode) {
+            explanationDiv.style.opacity = '0.7';
+        }
+    }, 4000);
 }
 
 function updateQuizNavigation() {
